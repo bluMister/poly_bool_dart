@@ -1,4 +1,4 @@
-import 'coordinate.dart';
+import 'package:latlong2/latlong.dart';
 import 'intersector.dart';
 import 'segment_chainer.dart';
 import 'segment_selector.dart';
@@ -7,7 +7,7 @@ import 'types.dart';
 typedef Selector = SegmentList Function(CombinedSegmentLists);
 
 class Polygon {
-  final List<List<Coordinate>> regions;
+  final List<List<LatLng>> regions;
   final bool inverted;
 
   const Polygon({required this.regions, this.inverted = false});

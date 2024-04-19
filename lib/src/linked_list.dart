@@ -1,12 +1,12 @@
 import 'dart:collection';
 
-import 'coordinate.dart';
+import 'package:latlong2/latlong.dart';
 import 'epsilon.dart';
 import 'types.dart';
 
 class EventNode extends LinkedListEntry<EventNode> {
   final bool isStart;
-  Coordinate pt;
+  LatLng pt;
   final Segment seg;
   final bool primary;
   late final EventNode other;

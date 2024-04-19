@@ -1,6 +1,6 @@
 import 'package:quiver/collection.dart';
 
-import 'coordinate.dart';
+import 'package:latlong2/latlong.dart';
 import 'linked_list.dart';
 import 'segment_fill.dart';
 
@@ -26,7 +26,7 @@ class Intersection {
   /// <summary>
   /// where the intersection point is at
   /// </summary>
-  final Coordinate pt;
+  final LatLng pt;
 
   /// <summary>
   /// where intersection point is along A
@@ -58,16 +58,16 @@ class CombinedSegmentLists {
       {required this.combined, this.inverted1 = false, this.inverted2 = false});
 }
 
-// class PointList extends DelegatingList<Coordinate> {
-//   final List<Coordinate> _points = [];
+// class PointList extends DelegatingList<LatLng> {
+//   final List<LatLng> _points = [];
 //
 //   @override
-//   List<Coordinate> get delegate => _points;
+//   List<LatLng> get delegate => _points;
 // }
 
 class Segment {
-  final Coordinate start;
-  Coordinate end;
+  final LatLng start;
+  LatLng end;
   SegmentFill myFill;
   SegmentFill? otherFill;
 

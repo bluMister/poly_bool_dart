@@ -1,4 +1,4 @@
-import 'coordinate.dart';
+import 'package:latlong2/latlong.dart';
 import 'epsilon.dart';
 import 'linked_list.dart';
 import 'segment_fill.dart';
@@ -11,11 +11,11 @@ class Intersecter {
 
   Intersecter(this.selfIntersection);
 
-  Segment segmentNew(Coordinate start, Coordinate end) {
+  Segment segmentNew(LatLng start, LatLng end) {
     return Segment(start: start, end: end, myFill: SegmentFill());
   }
 
-  Segment segmentCopy(Coordinate start, Coordinate end, Segment seg) {
+  Segment segmentCopy(LatLng start, LatLng end, Segment seg) {
     return Segment(
       start: start,
       end: end,
@@ -39,7 +39,7 @@ class Intersecter {
     return ev_start;
   }
 
-  void eventUpdateEnd(EventNode ev, Coordinate end) {
+  void eventUpdateEnd(EventNode ev, LatLng end) {
     // slides an end backwards
     //   (start)------------(end)    to:
     //   (start)---(end)
@@ -51,7 +51,7 @@ class Intersecter {
     event_root.insertBefore(ev.other);
   }
 
-  EventNode eventDivide(EventNode ev, Coordinate pt) {
+  EventNode eventDivide(EventNode ev, LatLng pt) {
     final ns = segmentCopy(pt, ev.seg.end, ev.seg);
     eventUpdateEnd(ev, pt);
 
@@ -87,7 +87,7 @@ class Intersecter {
     return calculate_INTERNAL(inverted1, inverted2);
   }
 
-  void addRegion(List<Coordinate> region) {
+  void addRegion(List<LatLng> region) {
     if (!selfIntersection) {
       throw Exception(
           "The addRegion() function is only intended for use when selfIntersection = false");

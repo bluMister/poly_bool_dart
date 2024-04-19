@@ -1,3 +1,4 @@
+import 'package:latlong2/latlong.dart';
 import 'package:test/test.dart';
 
 import 'package:polybool/polybool.dart';
@@ -6,19 +7,19 @@ void main() {
   test('Two partially overlapping squares', () {
     final poly1 = Polygon(regions: [
       [
-        Coordinate(1, 1),
-        Coordinate(10, 1),
-        Coordinate(10, 10),
-        Coordinate(1, 10),
+        LatLng(1, 1),
+        LatLng(10, 1),
+        LatLng(10, 10),
+        LatLng(1, 10),
       ]
     ]);
 
     final poly2 = Polygon(regions: [
       [
-        Coordinate(-4, -4),
-        Coordinate(4, -4),
-        Coordinate(4, 4),
-        Coordinate(-4, 4),
+        LatLng(-4, -4),
+        LatLng(4, -4),
+        LatLng(4, 4),
+        LatLng(-4, 4),
       ]
     ]);
 
@@ -28,14 +29,14 @@ void main() {
     expect(
         poly1.union(poly2).regions.first,
         orderedEquals([
-          Coordinate(10.0, 10.0),
-          Coordinate(10.0, 1.0),
-          Coordinate(4.0, 1.0),
-          Coordinate(4.0, -4.0),
-          Coordinate(-4.0, -4.0),
-          Coordinate(-4.0, 4.0),
-          Coordinate(1.0, 4.0),
-          Coordinate(1.0, 10.0),
+          LatLng(10.0, 10.0),
+          LatLng(10.0, 1.0),
+          LatLng(4.0, 1.0),
+          LatLng(4.0, -4.0),
+          LatLng(-4.0, -4.0),
+          LatLng(-4.0, 4.0),
+          LatLng(1.0, 4.0),
+          LatLng(1.0, 10.0),
         ]));
 
     // Self-intersection is also identity.
@@ -45,10 +46,10 @@ void main() {
     expect(
         intersection.regions.first,
         orderedEquals([
-          Coordinate(4.0, 4.0),
-          Coordinate(4.0, 1.0),
-          Coordinate(1.0, 1.0),
-          Coordinate(1.0, 4.0),
+          LatLng(4.0, 4.0),
+          LatLng(4.0, 1.0),
+          LatLng(1.0, 1.0),
+          LatLng(1.0, 4.0),
         ]));
     expect(poly2.intersect(poly1).regions.first,
         equals(intersection.regions.first));
@@ -58,12 +59,12 @@ void main() {
     expect(
         poly1.difference(poly2).regions.first,
         orderedEquals([
-          Coordinate(10.0, 10.0),
-          Coordinate(10.0, 1.0),
-          Coordinate(4.0, 1.0),
-          Coordinate(4.0, 4.0),
-          Coordinate(1.0, 4.0),
-          Coordinate(1.0, 10.0)
+          LatLng(10.0, 10.0),
+          LatLng(10.0, 1.0),
+          LatLng(4.0, 1.0),
+          LatLng(4.0, 4.0),
+          LatLng(1.0, 4.0),
+          LatLng(1.0, 10.0)
         ]));
 
     // Self-difference is empty.
@@ -71,12 +72,12 @@ void main() {
     expect(
         poly1.differenceRev(poly2).regions.first,
         orderedEquals([
-          Coordinate(4.0, 1.0),
-          Coordinate(4.0, -4.0),
-          Coordinate(-4.0, -4.0),
-          Coordinate(-4.0, 4.0),
-          Coordinate(1.0, 4.0),
-          Coordinate(1.0, 1.0),
+          LatLng(4.0, 1.0),
+          LatLng(4.0, -4.0),
+          LatLng(-4.0, -4.0),
+          LatLng(-4.0, 4.0),
+          LatLng(1.0, 4.0),
+          LatLng(1.0, 1.0),
         ]));
     //// Make sure -(P1 - P2) == (P2 - P1).
     expect(poly1.differenceRev(poly2).regions.first,
@@ -88,22 +89,22 @@ void main() {
     expect(
         xor.regions.first,
         equals([
-          Coordinate(4.0, 1.0),
-          Coordinate(4.0, -4.0),
-          Coordinate(-4.0, -4.0),
-          Coordinate(-4.0, 4.0),
-          Coordinate(1.0, 4.0),
-          Coordinate(1.0, 1.0),
+          LatLng(4.0, 1.0),
+          LatLng(4.0, -4.0),
+          LatLng(-4.0, -4.0),
+          LatLng(-4.0, 4.0),
+          LatLng(1.0, 4.0),
+          LatLng(1.0, 1.0),
         ]));
     expect(
         xor.regions.last,
         equals([
-          Coordinate(10.0, 10.0),
-          Coordinate(10.0, 1.0),
-          Coordinate(4.0, 1.0),
-          Coordinate(4.0, 4.0),
-          Coordinate(1.0, 4.0),
-          Coordinate(1.0, 10.0),
+          LatLng(10.0, 10.0),
+          LatLng(10.0, 1.0),
+          LatLng(4.0, 1.0),
+          LatLng(4.0, 4.0),
+          LatLng(1.0, 4.0),
+          LatLng(1.0, 10.0),
         ]));
 
     // Make sure multiple regions are merged.

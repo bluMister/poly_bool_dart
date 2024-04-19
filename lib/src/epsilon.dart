@@ -5,7 +5,7 @@
 
 import 'dart:math' as math;
 
-import 'coordinate.dart';
+import 'package:latlong2/latlong.dart';
 import 'types.dart';
 
 const epsilon = Epsilon();
@@ -15,13 +15,13 @@ class Epsilon {
 
   const Epsilon();
 
-  bool pointAboveOrOnLine(Coordinate pt, Coordinate left, Coordinate right) {
-    final Ax = left.x;
-    final Ay = left.y;
-    final Bx = right.x;
-    final By = right.y;
-    final Cx = pt.x;
-    final Cy = pt.y;
+  bool pointAboveOrOnLine(LatLng pt, LatLng left, LatLng right) {
+    final Ax = left.latitude;
+    final Ay = left.longitude;
+    final Bx = right.latitude;
+    final By = right.longitude;
+    final Cx = pt.latitude;
+    final Cy = pt.longitude;
     final ABx = Bx - Ax;
     final ABy = By - Ay;
     final AB = math.sqrt(ABx * ABx + ABy * ABy);
@@ -30,14 +30,14 @@ class Epsilon {
     return ABx * (Cy - Ay) - ABy * (Cx - Ax) >= -eps * AB;
   }
 
-  bool pointBetween(Coordinate p, Coordinate left, Coordinate right) {
+  bool pointBetween(LatLng p, LatLng left, LatLng right) {
     // p must be collinear with left->right
     // returns false if p == left, p == right, or left == right
     if (pointsSame(p, left) || pointsSame(p, right)) return false;
-    final d_py_ly = p.y - left.y;
-    final d_rx_lx = right.x - left.x;
-    final d_px_lx = p.x - left.x;
-    final d_ry_ly = right.y - left.y;
+    final d_py_ly = p.longitude - left.longitude;
+    final d_rx_lx = right.latitude - left.latitude;
+    final d_px_lx = p.latitude - left.latitude;
+    final d_ry_ly = right.longitude - left.longitude;
 
     final dot = d_px_lx * d_rx_lx + d_py_ly * d_ry_ly;
     // dot < 0 is p is to the left of 'left'
@@ -47,33 +47,33 @@ class Epsilon {
     return dot <= sqlen;
   }
 
-  bool pointsSameX(Coordinate p1, Coordinate p2) {
-    return (p1.x - p2.x).abs() < eps;
+  bool pointsSameX(LatLng p1, LatLng p2) {
+    return (p1.latitude - p2.latitude).abs() < eps;
   }
 
-  bool pointsSameY(Coordinate p1, Coordinate p2) {
-    return (p1.y - p2.y).abs() < eps;
+  bool pointsSameY(LatLng p1, LatLng p2) {
+    return (p1.longitude - p2.longitude).abs() < eps;
   }
 
-  bool pointsSame(Coordinate p1, Coordinate p2) {
+  bool pointsSame(LatLng p1, LatLng p2) {
     return pointsSameX(p1, p2) && pointsSameY(p1, p2);
   }
 
-  int pointsCompare(Coordinate p1, Coordinate p2) {
+  int pointsCompare(LatLng p1, LatLng p2) {
     // returns -1 if p1 is smaller, 1 if p2 is smaller, 0 if equal
     if (pointsSameX(p1, p2))
-      return pointsSameY(p1, p2) ? 0 : (p1.y < p2.y ? -1 : 1);
-    return p1.x < p2.x ? -1 : 1;
+      return pointsSameY(p1, p2) ? 0 : (p1.longitude < p2.longitude ? -1 : 1);
+    return p1.latitude < p2.latitude ? -1 : 1;
   }
 
-  bool pointsCollinear(Coordinate pt1, Coordinate pt2, Coordinate pt3) {
+  bool pointsCollinear(LatLng pt1, LatLng pt2, LatLng pt3) {
     // does pt1->pt2->pt3 make a straight line?
     // essentially this is just checking to see if the slope(pt1->pt2) === slope(pt2->pt3)
     // if slopes are equal, then they must be collinear, because they share pt2
-    final dx1 = pt1.x - pt2.x;
-    final dy1 = pt1.y - pt2.y;
-    final dx2 = pt2.x - pt3.x;
-    final dy2 = pt2.y - pt3.y;
+    final dx1 = pt1.latitude - pt2.latitude;
+    final dy1 = pt1.longitude - pt2.longitude;
+    final dx2 = pt2.latitude - pt3.latitude;
+    final dy2 = pt2.longitude - pt3.longitude;
     final n1 = math.sqrt(dx1 * dx1 + dy1 * dy1);
     final n2 = math.sqrt(dx2 * dx2 + dy2 * dy2);
     // Assuming det(u, v) = 0, we have:
@@ -112,10 +112,10 @@ class Epsilon {
     final b0 = b.start;
     final b1 = b.end;
 
-    final adx = a1.x - a0.x;
-    final ady = a1.y - a0.y;
-    final bdx = b1.x - b0.x;
-    final bdy = b1.y - b0.y;
+    final adx = a1.latitude - a0.latitude;
+    final ady = a1.longitude - a0.longitude;
+    final bdx = b1.latitude - b0.latitude;
+    final bdy = b1.longitude - b0.longitude;
 
     final axb = adx * bdy - ady * bdx;
     final n1 = math.sqrt(adx * adx + ady * ady);
@@ -124,13 +124,13 @@ class Epsilon {
       return null;
     }
 
-    final dx = a0.x - b0.x;
-    final dy = a0.y - b0.y;
+    final dx = a0.latitude - b0.latitude;
+    final dy = a0.longitude - b0.longitude;
 
     final A = (bdx * dy - bdy * dx) / axb;
     final B = (adx * dy - ady * dx) / axb;
 
-    final pt = Coordinate(a0.x + A * adx, a0.y + A * ady);
+    final pt = LatLng(a0.latitude + A * adx, a0.longitude + A * ady);
     final intersection = Intersection(alongA: 0, alongB: 0, pt: pt);
 
     // categorize where intersection point is along A and B

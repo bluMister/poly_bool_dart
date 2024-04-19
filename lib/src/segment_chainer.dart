@@ -1,12 +1,12 @@
-import 'coordinate.dart';
+import 'package:latlong2/latlong.dart';
 import 'epsilon.dart';
 import 'types.dart';
 
 class SegmentChainer {
-  List<List<Coordinate>> chains = [];
-  List<List<Coordinate>> regions = [];
+  List<List<LatLng>> chains = [];
+  List<List<LatLng>> regions = [];
 
-  List<List<Coordinate>> chain(SegmentList segments) {
+  List<List<LatLng>> chain(SegmentList segments) {
     chains.clear();
     regions.clear();
 
@@ -173,7 +173,7 @@ class SegmentChainer {
   }
 
   void reverseChain(int index) {
-    List<Coordinate> pointList = [];
+    List<LatLng> pointList = [];
     pointList.addAll(chains[index].reversed.toList());
     chains[index] = pointList; // gee, that's easy
   }

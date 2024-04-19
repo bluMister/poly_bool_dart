@@ -1,4 +1,4 @@
 library polybool;
 
-export 'src/coordinate.dart';
+import 'package:latlong2/latlong.dart';
 export 'src/polygon.dart';
